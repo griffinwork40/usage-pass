@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { trackCtaClick } from "@/lib/analytics";
+import { ContourField, DepthGlow } from "@/components/signature";
 
 const models = [
   { id: "anthropic/claude-sonnet", label: "Claude" },
@@ -25,15 +26,13 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
-      {/* Subtle grid background */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(var(--color-muted) 1px, transparent 1px), linear-gradient(90deg, var(--color-muted) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-        }}
-      />
+      {/* Contour field — hidden depth beneath a small signal */}
+      <div className="absolute inset-0">
+        <ContourField variant="hero" className="absolute inset-0 w-full h-full" />
+      </div>
+
+      {/* Depth glow — light source beneath layers, lower-left bias */}
+      <DepthGlow position="lower-left" warmth="cool" />
 
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
@@ -81,7 +80,15 @@ export function Hero() {
 
 function HeroCodeBlock({ model }: { model: (typeof models)[number] }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-surface">
+    <div className="relative overflow-hidden rounded-xl border border-border bg-surface">
+      {/* Faint contour depth behind the terminal */}
+      <div
+        className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full opacity-[0.03]"
+        style={{
+          background: "radial-gradient(circle, var(--color-accent) 0%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
       {/* Terminal chrome */}
       <div className="flex items-center gap-2 border-b border-border-subtle px-4 py-3">
         <div className="h-2.5 w-2.5 rounded-full bg-border" />

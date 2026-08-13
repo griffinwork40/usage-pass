@@ -9,6 +9,8 @@
   --color-border-subtle: #1c1c1e;
   --color-accent: #22d3ee;
   --color-accent-muted: #0e7490;
+  --color-accent-warm: #38bdf8;
+  --color-depth: #0c4a6e;
   --color-surface: #111113;
   --color-surface-raised: #18181b;
   --color-success: #22c55e;
@@ -80,4 +82,21 @@ html {
 @keyframes model-fade {
   0%, 100% { opacity: 0; transform: translateY(4px); }
   10%, 90% { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Signature: slow contour drift ── */
+@keyframes contour-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(4px, -2px) scale(1.01); }
+}
+
+/* ── Signature: reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+    opacity: 1;
+  }
+  svg animate {
+    animation: none;
+  }
 }

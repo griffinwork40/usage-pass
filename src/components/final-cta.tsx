@@ -1,11 +1,15 @@
 "use client";
 
 import { trackCtaClick } from "@/lib/analytics";
+import { DepthGlow } from "@/components/signature";
 
 export function FinalCta() {
   return (
-    <section className="border-t border-border-subtle py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-6 text-center">
+    <section className="relative overflow-hidden border-t border-border-subtle py-20 md:py-28">
+      {/* Warm glow — embodiment zone, the most resolved part of the page */}
+      <DepthGlow position="center" warmth="warm" />
+
+      <div className="relative mx-auto max-w-6xl px-6 text-center">
         <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
           Stop paying per token.
         </h2>

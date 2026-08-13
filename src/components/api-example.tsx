@@ -1,6 +1,6 @@
 export function ApiExample() {
   return (
-    <section className="border-t border-border-subtle py-20 md:py-28">
+    <section className="py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
           {/* Copy */}
@@ -37,8 +37,16 @@ export function ApiExample() {
             </div>
           </div>
 
-          {/* Code block */}
-          <div className="overflow-hidden rounded-xl border border-border bg-surface">
+          {/* Code block — framed like evidence extracted from the field */}
+          <div className="relative overflow-hidden rounded-xl border border-border bg-surface">
+            {/* Subtle depth contour behind the code */}
+            <div
+              className="absolute -bottom-12 -left-12 h-40 w-40 rounded-full opacity-[0.04]"
+              style={{
+                background: "radial-gradient(circle, var(--color-accent) 0%, transparent 70%)",
+              }}
+              aria-hidden="true"
+            />
             <div className="flex items-center gap-2 border-b border-border-subtle px-4 py-3">
               <span className="font-mono text-xs text-muted-foreground">
                 setup.sh

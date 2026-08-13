@@ -9,6 +9,7 @@ import { SignupSection } from "@/components/signup-section";
 import { Faq } from "@/components/faq";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
+import { EarnedPath, ScopeRule } from "@/components/signature";
 
 export default function Home() {
   return (
@@ -17,10 +18,28 @@ export default function Home() {
       <main>
         <Hero />
         <ModelStrip />
+
+        {/* Descent: signal → depth transition */}
+        <EarnedPath className="opacity-60" direction="right" />
+
         <Problem />
+
+        <ScopeRule className="mx-auto max-w-6xl px-6" label="how" />
+
         <ApiExample />
+
+        {/* Compression zone transition */}
+        <EarnedPath className="opacity-40" direction="left" />
+
         <Benefits />
+
+        <ScopeRule className="mx-auto max-w-6xl px-6" label="cost" />
+
         <Pricing />
+
+        {/* Rise: compression → embodiment transition */}
+        <EarnedPath className="opacity-50" direction="right" />
+
         <SignupSection />
         <Faq />
         <FinalCta />

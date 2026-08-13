@@ -1,12 +1,15 @@
 import { SignupForm } from "./signup-form";
+import { DepthGlow } from "@/components/signature";
 
 export function SignupSection() {
   return (
     <section
       id="signup"
-      className="border-t border-border-subtle py-20 md:py-28"
+      className="relative overflow-hidden py-20 md:py-28"
     >
-      <div className="mx-auto max-w-6xl px-6">
+      {/* Warm glow — embodiment zone, arrival */}
+      <DepthGlow position="upper-right" warmth="warm" />
+      <div className="relative mx-auto max-w-6xl px-6">
         <div className="mx-auto grid max-w-4xl gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Copy */}
           <div>
