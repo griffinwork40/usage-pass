@@ -4,11 +4,14 @@
   --color-background: #09090b;
   --color-foreground: #fafafa;
   --color-muted: #a1a1aa;
-  --color-muted-foreground: #71717a;
+  --color-muted-foreground: #a1a1aa;
+  --color-code-muted: #d4d4dc;
   --color-border: #27272a;
   --color-border-subtle: #1c1c1e;
   --color-accent: #22d3ee;
   --color-accent-muted: #0e7490;
+  --color-accent-warm: #38bdf8;
+  --color-depth: #0c4a6e;
   --color-surface: #111113;
   --color-surface-raised: #18181b;
   --color-success: #22c55e;
@@ -80,4 +83,27 @@ html {
 @keyframes model-fade {
   0%, 100% { opacity: 0; transform: translateY(4px); }
   10%, 90% { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Signature: compositor-eligible contour breathe ── */
+@keyframes contour-breathe {
+  0%, 100% { transform: scaleX(1); }
+  50%       { transform: scaleX(1.03); }
+}
+
+.contour-ring {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: contour-breathe var(--breathe-dur, 10s) ease-in-out infinite;
+}
+
+/* ── Signature: reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+    opacity: 1;
+  }
+  .contour-ring {
+    animation: none;
+  }
 }

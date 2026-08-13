@@ -39,7 +39,7 @@ const benefits = [
 
 export function Benefits() {
   return (
-    <section className="border-t border-border-subtle py-20 md:py-28">
+    <section className="py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl text-center mb-16">
           <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
@@ -51,20 +51,31 @@ export function Benefits() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((b) => (
+          {benefits.map((b, i) => (
             <div
               key={b.title}
-              className="group rounded-xl border border-border-subtle bg-surface p-6 transition-colors hover:border-border"
+              className="group relative overflow-hidden rounded-xl border border-border-subtle bg-surface p-6 transition-colors hover:border-border"
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-surface-raised font-mono text-lg text-accent">
-                {b.icon}
+              {/* Faint contour pocket — each card is an extracted artifact */}
+              <div
+                className="absolute -top-8 -right-8 h-24 w-24 rounded-full opacity-[0.03]"
+                style={{
+                  background: `radial-gradient(circle, var(--color-accent) 0%, transparent 70%)`,
+                  transform: `scale(${1 + i * 0.15})`,
+                }}
+                aria-hidden="true"
+              />
+              <div className="relative">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-surface-raised font-mono text-lg text-accent">
+                  {b.icon}
+                </div>
+                <h3 className="mb-2 text-base font-semibold text-foreground">
+                  {b.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted">
+                  {b.description}
+                </p>
               </div>
-              <h3 className="mb-2 text-base font-semibold text-foreground">
-                {b.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted">
-                {b.description}
-              </p>
             </div>
           ))}
         </div>

@@ -1,6 +1,14 @@
+"use client";
+
+import { useState } from "react";
+
+type Tab = "before" | "after";
+
 export function ApiExample() {
+  const [tab, setTab] = useState<Tab>("before");
+
   return (
-    <section className="border-t border-border-subtle py-20 md:py-28">
+    <section className="py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
           {/* Copy */}
@@ -37,51 +45,124 @@ export function ApiExample() {
             </div>
           </div>
 
-          {/* Code block */}
-          <div className="overflow-hidden rounded-xl border border-border bg-surface">
-            <div className="flex items-center gap-2 border-b border-border-subtle px-4 py-3">
-              <span className="font-mono text-xs text-muted-foreground">
-                setup.sh
-              </span>
+          {/* Code block — before / after diff */}
+          <div className="relative overflow-hidden rounded-xl border border-border bg-surface">
+            {/* Subtle depth contour behind the code */}
+            <div
+              className="absolute -bottom-12 -left-12 h-40 w-40 rounded-full opacity-[0.04]"
+              style={{
+                background: "radial-gradient(circle, var(--color-accent) 0%, transparent 70%)",
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Tab bar */}
+            <div className="flex items-center gap-0 border-b border-border-subtle">
+              <button
+                onClick={() => setTab("before")}
+                className={`px-4 py-3 font-mono text-xs transition-colors ${
+                  tab === "before"
+                    ? "text-foreground border-b-2 border-accent"
+                    : "text-muted-foreground hover:text-muted"
+                }`}
+              >
+                before
+              </button>
+              <button
+                onClick={() => setTab("after")}
+                className={`px-4 py-3 font-mono text-xs transition-colors ${
+                  tab === "after"
+                    ? "text-foreground border-b-2 border-accent"
+                    : "text-muted-foreground hover:text-muted"
+                }`}
+              >
+                after
+              </button>
             </div>
+
             <pre className="overflow-x-auto p-5 font-mono text-sm leading-7">
               <code>
-                <Line comment="# Point any OpenAI-compatible tool at UsagePass" />
-                <Line>
-                  <span className="text-accent">export</span>{" "}
-                  OPENAI_BASE_URL=&quot;https://api.usagepass.com/v1&quot;
-                </Line>
-                <Line>
-                  <span className="text-accent">export</span>{" "}
-                  OPENAI_API_KEY=&quot;up_live_...&quot;
-                </Line>
-                <br />
-                <Line comment="# Now use any model" />
-                <Line>
-                  curl $OPENAI_BASE_URL/chat/completions \
-                </Line>
-                <Line indent>
-                  -H &quot;Authorization: Bearer $OPENAI_API_KEY&quot; \
-                </Line>
-                <Line indent>
-                  -d <span className="text-accent">&apos;&#123;</span>
-                </Line>
-                <Line indent>
-                  {"    "}&quot;model&quot;: &quot;anthropic/claude-sonnet&quot;,
-                </Line>
-                <Line indent>
-                  {"    "}&quot;messages&quot;: [&#123;&quot;role&quot;:
-                  &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;&#125;]
-                </Line>
-                <Line indent>
-                  <span className="text-accent">&#125;&apos;</span>
-                </Line>
+                {tab === "before" ? <BeforeCode /> : <AfterCode />}
               </code>
             </pre>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function BeforeCode() {
+  return (
+    <>
+      <Line comment="# Direct OpenAI setup" />
+      <Line>
+        <span className="text-accent">export</span>{" "}
+        OPENAI_BASE_URL=&quot;https://api.openai.com/v1&quot;
+      </Line>
+      <Line>
+        <span className="text-accent">export</span>{" "}
+        OPENAI_API_KEY=&quot;sk-...&quot;
+      </Line>
+      <br />
+      <Line comment="# Locked to one provider" />
+      <Line>
+        curl $OPENAI_BASE_URL/chat/completions \
+      </Line>
+      <Line indent>
+        -H &quot;Authorization: Bearer $OPENAI_API_KEY&quot; \
+      </Line>
+      <Line indent>
+        -d <span className="text-accent">&apos;&#123;</span>
+      </Line>
+      <Line indent>
+        {"    "}&quot;model&quot;: &quot;gpt-4o&quot;,
+      </Line>
+      <Line indent>
+        {"    "}&quot;messages&quot;: [&#123;&quot;role&quot;:
+        &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;&#125;]
+      </Line>
+      <Line indent>
+        <span className="text-accent">&#125;&apos;</span>
+      </Line>
+    </>
+  );
+}
+
+function AfterCode() {
+  return (
+    <>
+      <Line comment="# Point at UsagePass — that's it" />
+      <Line>
+        <span className="text-accent">export</span>{" "}
+        OPENAI_BASE_URL=&quot;<span className="text-accent">https://api.usagepass.com/v1</span>&quot;
+      </Line>
+      <Line>
+        <span className="text-accent">export</span>{" "}
+        OPENAI_API_KEY=&quot;<span className="text-accent">up_live_...</span>&quot;
+      </Line>
+      <br />
+      <Line comment="# Now use any model from any provider" />
+      <Line>
+        curl $OPENAI_BASE_URL/chat/completions \
+      </Line>
+      <Line indent>
+        -H &quot;Authorization: Bearer $OPENAI_API_KEY&quot; \
+      </Line>
+      <Line indent>
+        -d <span className="text-accent">&apos;&#123;</span>
+      </Line>
+      <Line indent>
+        {"    "}&quot;model&quot;: &quot;<span className="text-accent">anthropic/claude-sonnet</span>&quot;,
+      </Line>
+      <Line indent>
+        {"    "}&quot;messages&quot;: [&#123;&quot;role&quot;:
+        &quot;user&quot;, &quot;content&quot;: &quot;Hello&quot;&#125;]
+      </Line>
+      <Line indent>
+        <span className="text-accent">&#125;&apos;</span>
+      </Line>
+    </>
   );
 }
 
@@ -96,7 +177,7 @@ function Line({
 }) {
   if (comment) {
     return (
-      <div className="text-muted-foreground">
+      <div className="text-[var(--color-code-muted)]">
         {comment}
       </div>
     );

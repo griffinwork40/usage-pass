@@ -41,3 +41,5 @@ next-env.d.ts
 
 # signup data (contains PII)
 /data/
+.afk-worktrees/
+.afk-design-run/

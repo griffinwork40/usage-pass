@@ -27,6 +27,10 @@ const faqs = [
     q: "Can I use this in production?",
     a: "That's the goal. UsagePass is designed to be reliable enough for production workloads. During early access, we'll be working closely with beta users to ensure stability.",
   },
+  {
+    q: "What if I want to leave?",
+    a: "Change one environment variable. UsagePass uses the standard OpenAI-compatible API — your code, prompts, and tools stay exactly the same. No export step, no migration, no lock-in.",
+  },
 ];
 
 export function Faq() {
