@@ -97,33 +97,33 @@ function HeroCodeBlock({ model }: { model: (typeof models)[number] }) {
         aria-hidden="true"
       />
       {/* Terminal chrome */}
-      <div className="flex items-center gap-2 border-b border-border-subtle px-4 py-3">
-        <div className="h-2.5 w-2.5 rounded-full bg-border" />
-        <div className="h-2.5 w-2.5 rounded-full bg-border" />
-        <div className="h-2.5 w-2.5 rounded-full bg-border" />
+      <div className="flex items-center gap-2 border-b border-border-subtle px-3 py-2.5 sm:px-4 sm:py-3">
+        <div className="h-2 w-2 rounded-full bg-border sm:h-2.5 sm:w-2.5" />
+        <div className="h-2 w-2 rounded-full bg-border sm:h-2.5 sm:w-2.5" />
+        <div className="h-2 w-2 rounded-full bg-border sm:h-2.5 sm:w-2.5" />
         <span className="ml-2 font-mono text-xs text-muted">
           terminal
         </span>
       </div>
 
-      <div className="p-5 font-mono text-sm leading-7">
+      <div className="p-3 font-mono text-xs leading-6 sm:p-5 sm:text-sm sm:leading-7">
         {/* Env setup */}
-        <div className="text-[var(--color-code-muted)]">
+        <div className="break-all text-[var(--color-code-muted)]">
           <span className="text-accent">$</span> export
           OPENAI_BASE_URL=
           <span className="text-foreground">
             https://api.usagepass.com/v1
           </span>
         </div>
-        <div className="mb-5 text-muted">
+        <div className="mb-4 break-all text-muted sm:mb-5">
           <span className="text-accent">$</span> export OPENAI_API_KEY=
           <span className="text-foreground">up_live_...</span>
         </div>
 
         {/* Model request */}
-        <div className="rounded-lg bg-background/50 p-4 border border-border-subtle">
+        <div className="rounded-lg bg-background/50 p-3 border border-border-subtle sm:p-4">
           <div className="text-[var(--color-code-muted)]">{"{"}</div>
-          <div className="pl-4">
+          <div className="pl-3 sm:pl-4">
             <span className="text-[var(--color-code-muted)]">&quot;model&quot;: </span>
             <span
               key={model.id}
@@ -133,7 +133,7 @@ function HeroCodeBlock({ model }: { model: (typeof models)[number] }) {
             </span>
             <span className="text-[var(--color-code-muted)]">,</span>
           </div>
-          <div className="pl-4 text-muted">
+          <div className="pl-3 text-muted sm:pl-4">
             &quot;messages&quot;: [...]
           </div>
           <div className="text-[var(--color-code-muted)]">{"}"}</div>
