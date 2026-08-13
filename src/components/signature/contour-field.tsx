@@ -1,3 +1,5 @@
+import type React from "react";
+
 /**
  * ContourField — concentric topographic rings implying hidden depth.
  *
@@ -84,16 +86,13 @@ export function ContourField({
               opacity={ring.op}
               fill="none"
               transform={`rotate(${ring.rot}, ${cx}, ${cy})`}
-            >
-              {variant === "hero" && (
-                <animate
-                  attributeName="rx"
-                  values={`${rx};${rx + 2};${rx}`}
-                  dur={`${10 + i * 2}s`}
-                  repeatCount="indefinite"
-                />
-              )}
-            </ellipse>
+              className={variant === "hero" ? "contour-ring" : undefined}
+              style={
+                variant === "hero"
+                  ? ({ "--breathe-dur": `${10 + i * 2}s` } as React.CSSProperties)
+                  : undefined
+              }
+            />
           );
         })}
 

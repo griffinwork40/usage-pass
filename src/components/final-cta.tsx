@@ -2,8 +2,11 @@
 
 import { trackCtaClick } from "@/lib/analytics";
 import { DepthGlow } from "@/components/signature";
+import { useSignupModal } from "./signup-modal-provider";
 
 export function FinalCta() {
+  const { openModal } = useSignupModal();
+
   return (
     <section className="relative overflow-hidden border-t border-border-subtle py-20 md:py-28">
       {/* Warm glow — embodiment zone, the most resolved part of the page */}
@@ -16,13 +19,15 @@ export function FinalCta() {
         <p className="mx-auto mb-8 max-w-md text-lg text-muted">
           Join the early-access list for flat-rate multi-model inference.
         </p>
-        <a
-          href="#signup"
-          onClick={() => trackCtaClick("final-cta")}
+        <button
+          onClick={() => {
+            trackCtaClick("final-cta");
+            openModal();
+          }}
           className="inline-block rounded-lg bg-accent px-8 py-3.5 text-sm font-semibold text-background transition-opacity hover:opacity-90"
         >
-          Get Early Access
-        </a>
+          Claim your spot
+        </button>
       </div>
     </section>
   );

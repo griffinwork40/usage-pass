@@ -26,7 +26,15 @@ export function Footer() {
           </a>
         </div>
         <span className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} UsagePass
+          © {new Date().getFullYear()} UsagePass · Built by{" "}
+          <a
+            href="https://github.com/griffinwork40"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted transition-colors hover:text-foreground"
+          >
+            Griffin Long
+          </a>
         </span>
       </div>
     </footer>

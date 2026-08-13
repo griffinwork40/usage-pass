@@ -1,6 +1,7 @@
 "use client";
 
 import { trackCtaClick, trackTierSelect } from "@/lib/analytics";
+import { useSignupModal } from "./signup-modal-provider";
 
 const tiers = [
   {
@@ -10,7 +11,7 @@ const tiers = [
     features: [
       "All supported model families",
       "OpenAI-compatible API",
-      "Standard rate limits",
+      "~1M tokens / day across models",
       "Community support",
     ],
     highlighted: false,
@@ -22,7 +23,7 @@ const tiers = [
       "For developers regularly using AI coding tools and agents.",
     features: [
       "Everything in Starter",
-      "Higher usage limits",
+      "~5M tokens / day across models",
       "Priority rate limits",
       "Priority support",
     ],
@@ -34,7 +35,7 @@ const tiers = [
     description: "For heavy agent and multi-model workflows.",
     features: [
       "Everything in Pro",
-      "Highest usage limits",
+      "~15M tokens / day across models",
       "Dedicated rate capacity",
       "Direct support channel",
     ],
@@ -72,6 +73,8 @@ function PricingCard({
   features,
   highlighted,
 }: (typeof tiers)[number]) {
+  const { openModal } = useSignupModal();
+
   return (
     <div
       className={`relative flex flex-col rounded-xl border p-6 transition-colors ${
@@ -102,11 +105,11 @@ function PricingCard({
         ))}
       </ul>
 
-      <a
-        href="#signup"
+      <button
         onClick={() => {
           trackCtaClick("pricing", name.toLowerCase());
           trackTierSelect(name.toLowerCase());
+          openModal(name.toLowerCase());
         }}
         className={`block rounded-lg py-2.5 text-center text-sm font-semibold transition-opacity hover:opacity-90 ${
           highlighted
@@ -114,8 +117,8 @@ function PricingCard({
             : "bg-foreground text-background"
         }`}
       >
-        Get Early Access
-      </a>
+        Lock in {name} pricing
+      </button>
     </div>
   );
 }

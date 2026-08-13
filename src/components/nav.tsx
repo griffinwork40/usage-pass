@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { trackCtaClick } from "@/lib/analytics";
+import { useSignupModal } from "./signup-modal-provider";
 
 export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { openModal } = useSignupModal();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border-subtle bg-background/80 backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border-subtle bg-background/95">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <a
           href="#"
@@ -36,13 +38,15 @@ export function Nav() {
           >
             FAQ
           </a>
-          <a
-            href="#signup"
-            onClick={() => trackCtaClick("nav")}
+          <button
+            onClick={() => {
+              trackCtaClick("nav");
+              openModal();
+            }}
             className="rounded-md bg-foreground px-4 py-1.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
           >
             Get Early Access
-          </a>
+          </button>
         </div>
 
         {/* Mobile menu button */}
@@ -88,16 +92,16 @@ export function Nav() {
             >
               FAQ
             </a>
-            <a
-              href="#signup"
+            <button
               onClick={() => {
                 setMenuOpen(false);
                 trackCtaClick("nav-mobile");
+                openModal();
               }}
               className="rounded-md bg-foreground px-4 py-2 text-center text-sm font-medium text-background"
             >
               Get Early Access
-            </a>
+            </button>
           </div>
         </div>
       )}

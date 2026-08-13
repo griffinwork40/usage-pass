@@ -22,7 +22,7 @@ export function ScopeRule({
       <div className="flex items-center gap-2">
         <div className="h-3 w-px bg-accent/20" />
         {label && (
-          <span className="font-mono text-[10px] uppercase tracking-widest text-accent/25">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             {label}
           </span>
         )}

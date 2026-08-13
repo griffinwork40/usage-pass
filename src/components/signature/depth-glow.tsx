@@ -29,11 +29,10 @@ export function DepthGlow({
       className={`absolute pointer-events-none select-none ${positionStyles[position]} ${className}`}
       aria-hidden="true"
       style={{
-        width: "clamp(300px, 50vw, 700px)",
-        height: "clamp(300px, 50vw, 700px)",
-        background: `radial-gradient(ellipse at center, ${colorMap[warmth]} 0%, transparent 70%)`,
+        width: "clamp(400px, 60vw, 900px)",
+        height: "clamp(400px, 60vw, 900px)",
+        background: `radial-gradient(ellipse at center, ${colorMap[warmth]} 0%, transparent 60%)`,
         opacity: warmth === "cool" ? 0.04 : 0.03,
-        filter: "blur(60px)",
       }}
     />
   );

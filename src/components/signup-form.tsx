@@ -27,13 +27,24 @@ const toolOptions = [
 ];
 
 type FormState = "idle" | "submitting" | "success" | "error";
+type Step = "email" | "details";
 
-export function SignupForm() {
+interface SignupFormProps {
+  /** If true, show only the email + plan step (used in modal). */
+  compact?: boolean;
+  /** Pre-select a plan from a pricing card CTA. */
+  defaultPlan?: string;
+  /** Callback after successful submit. */
+  onSuccess?: () => void;
+}
+
+export function SignupForm({ compact, defaultPlan, onSuccess }: SignupFormProps) {
   const [email, setEmail] = useState("");
-  const [plan, setPlan] = useState("pro");
+  const [plan, setPlan] = useState(defaultPlan || "pro");
   const [spend, setSpend] = useState("");
   const [tools, setTools] = useState<string[]>([]);
   const [state, setState] = useState<FormState>("idle");
+  const [step, setStep] = useState<Step>("email");
   const [errorMsg, setErrorMsg] = useState("");
 
   function toggleTool(tool: string) {
@@ -61,6 +72,20 @@ export function SignupForm() {
       }
 
       trackSignupCompleted(plan, spend, tools);
+
+      if (compact) {
+        setState("success");
+        onSuccess?.();
+        return;
+      }
+
+      // Full form: show optional details step
+      if (step === "email") {
+        setStep("details");
+        setState("idle");
+        return;
+      }
+
       setState("success");
     } catch (err) {
       setErrorMsg(
@@ -84,6 +109,88 @@ export function SignupForm() {
     );
   }
 
+  // Step 2: Optional details (only in full form mode)
+  if (step === "details" && !compact) {
+    return (
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="rounded-lg border border-accent/20 bg-accent/5 p-3 text-center">
+          <p className="text-sm text-accent">
+            ✓ You&apos;re in — tell us a bit more to shape the beta.
+          </p>
+        </div>
+
+        {/* Current spend */}
+        <div>
+          <label htmlFor="spend" className="mb-1.5 block text-sm font-medium">
+            Current monthly AI / API spend{" "}
+            <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <select
+            id="spend"
+            value={spend}
+            onChange={(e) => setSpend(e.target.value)}
+            className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent"
+          >
+            <option value="" disabled>
+              Select range
+            </option>
+            {spendRanges.map((s) => (
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Tools */}
+        <div>
+          <label className="mb-1.5 block text-sm font-medium">
+            Tools you currently use{" "}
+            <span className="text-muted-foreground">(optional)</span>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {toolOptions.map((tool) => (
+              <button
+                key={tool}
+                type="button"
+                onClick={() => toggleTool(tool)}
+                className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                  tools.includes(tool)
+                    ? "border-accent bg-accent/10 text-accent"
+                    : "border-border-subtle text-muted hover:border-border"
+                }`}
+              >
+                {tool}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {state === "error" && (
+          <p className="text-sm text-error">{errorMsg}</p>
+        )}
+
+        <div className="flex gap-3">
+          <button
+            type="submit"
+            disabled={state === "submitting"}
+            className="flex-1 rounded-lg bg-accent py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90 disabled:opacity-60"
+          >
+            {state === "submitting" ? "Saving…" : "Save details"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setState("success")}
+            className="rounded-lg border border-border px-4 py-3 text-sm text-muted transition-colors hover:text-foreground"
+          >
+            Skip
+          </button>
+        </div>
+      </form>
+    );
+  }
+
+  // Step 1: Email + plan (primary form)
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Email */}
@@ -125,53 +232,6 @@ export function SignupForm() {
         </div>
       </div>
 
-      {/* Current spend */}
-      <div>
-        <label htmlFor="spend" className="mb-1.5 block text-sm font-medium">
-          Current monthly AI / API spend
-        </label>
-        <select
-          id="spend"
-          required
-          value={spend}
-          onChange={(e) => setSpend(e.target.value)}
-          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-accent"
-        >
-          <option value="" disabled>
-            Select range
-          </option>
-          {spendRanges.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Tools */}
-      <div>
-        <label className="mb-1.5 block text-sm font-medium">
-          Tools you currently use{" "}
-          <span className="text-muted-foreground">(optional)</span>
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {toolOptions.map((tool) => (
-            <button
-              key={tool}
-              type="button"
-              onClick={() => toggleTool(tool)}
-              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
-                tools.includes(tool)
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border-subtle text-muted hover:border-border"
-              }`}
-            >
-              {tool}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Error */}
       {state === "error" && (
         <p className="text-sm text-error">{errorMsg}</p>
@@ -183,8 +243,12 @@ export function SignupForm() {
         disabled={state === "submitting"}
         className="w-full rounded-lg bg-accent py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90 disabled:opacity-60"
       >
-        {state === "submitting" ? "Submitting…" : "Join Early Access"}
+        {state === "submitting" ? "Submitting…" : "Get Early Access"}
       </button>
+
+      <p className="text-center text-xs text-muted-foreground">
+        No payment required. We&apos;ll email you when the beta opens.
+      </p>
     </form>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { trackCtaClick } from "@/lib/analytics";
 import { ContourField, DepthGlow } from "@/components/signature";
+import { useSignupModal } from "./signup-modal-provider";
 
 const models = [
   { id: "anthropic/claude-sonnet", label: "Claude" },
@@ -22,6 +23,7 @@ export function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  const { openModal } = useSignupModal();
   const current = models[activeModel];
 
   return (
@@ -42,30 +44,35 @@ export function Hero() {
               UsagePass
             </p>
             <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-foreground md:text-5xl lg:text-6xl animate-fade-up delay-100">
-              One pass.
+              Every AI model.
               <br />
-              Every model.
+              One flat price.
             </h1>
             <p className="mb-8 max-w-md text-lg leading-relaxed text-muted animate-fade-up delay-200">
-              Use Claude, GPT, Gemini, Kimi, GLM, Qwen and more through one
-              OpenAI-compatible API for one predictable monthly price.
+              Use Claude, GPT, Gemini, DeepSeek, and more through one
+              OpenAI-compatible API for a predictable monthly subscription.
             </p>
             <div className="flex flex-wrap gap-3 animate-fade-up delay-300">
-              <a
-                href="#signup"
-                onClick={() => trackCtaClick("hero")}
+              <button
+                onClick={() => {
+                  trackCtaClick("hero");
+                  openModal();
+                }}
                 className="rounded-lg bg-foreground px-6 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90"
               >
                 Get Early Access
-              </a>
+              </button>
               <a
-                href="#pricing"
+                href="#how-it-works"
                 onClick={() => trackCtaClick("hero-secondary")}
                 className="rounded-lg border border-border px-6 py-3 text-sm font-medium text-muted transition-colors hover:border-muted hover:text-foreground"
               >
-                See Pricing
+                How it works ↓
               </a>
             </div>
+            <p className="mt-4 font-mono text-xs text-muted-foreground animate-fade-up delay-400">
+              30+ models across 7 provider families · One API key
+            </p>
           </div>
 
           {/* Code visual */}
@@ -94,46 +101,46 @@ function HeroCodeBlock({ model }: { model: (typeof models)[number] }) {
         <div className="h-2.5 w-2.5 rounded-full bg-border" />
         <div className="h-2.5 w-2.5 rounded-full bg-border" />
         <div className="h-2.5 w-2.5 rounded-full bg-border" />
-        <span className="ml-2 font-mono text-xs text-muted-foreground">
+        <span className="ml-2 font-mono text-xs text-muted">
           terminal
         </span>
       </div>
 
       <div className="p-5 font-mono text-sm leading-7">
         {/* Env setup */}
-        <div className="text-muted-foreground">
+        <div className="text-[var(--color-code-muted)]">
           <span className="text-accent">$</span> export
           OPENAI_BASE_URL=
           <span className="text-foreground">
             https://api.usagepass.com/v1
           </span>
         </div>
-        <div className="mb-5 text-muted-foreground">
+        <div className="mb-5 text-muted">
           <span className="text-accent">$</span> export OPENAI_API_KEY=
           <span className="text-foreground">up_live_...</span>
         </div>
 
         {/* Model request */}
         <div className="rounded-lg bg-background/50 p-4 border border-border-subtle">
-          <div className="text-muted-foreground">{"{"}</div>
+          <div className="text-[var(--color-code-muted)]">{"{"}</div>
           <div className="pl-4">
-            <span className="text-muted-foreground">&quot;model&quot;: </span>
+            <span className="text-[var(--color-code-muted)]">&quot;model&quot;: </span>
             <span
               key={model.id}
               className="inline-block text-accent transition-all duration-300"
             >
               &quot;{model.id}&quot;
             </span>
-            <span className="text-muted-foreground">,</span>
+            <span className="text-[var(--color-code-muted)]">,</span>
           </div>
-          <div className="pl-4 text-muted-foreground">
+          <div className="pl-4 text-muted">
             &quot;messages&quot;: [...]
           </div>
-          <div className="text-muted-foreground">{"}"}</div>
+          <div className="text-[var(--color-code-muted)]">{"}"}</div>
         </div>
 
         {/* Cycling label */}
-        <p className="mt-3 text-xs text-muted-foreground">
+        <p className="mt-3 text-xs text-muted">
           Same API. Different model.{" "}
           <span className="text-accent">{model.label}</span> →
         </p>
